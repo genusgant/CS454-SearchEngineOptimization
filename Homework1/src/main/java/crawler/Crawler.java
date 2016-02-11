@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,12 +18,14 @@ import model.Link;
 
 public class Crawler {
 	
+	final static Logger logger = LogManager.getLogger(Crawler.class.getName());
+	
 	private String inputUrl;
 	private int level;
 	private List[] ExtLinks;
 	private Document source;
-	private Queue<Link> UrlsToCrawl = new LinkedList<Link>();
-	private Queue<Link> UrlsCrawled = new LinkedList<Link>();
+	public static Queue<Link> UrlsToCrawl;
+	public static Queue<Link> UrlsCrawled;
 	
 	public Crawler(Link InitialUrl, Queue<Link> UrlsToCrawl, Queue<Link> UrlsCrawled)
 	{
@@ -37,9 +41,12 @@ public class Crawler {
 	public Crawler(Queue<Link> UrlsToCrawl, Queue<Link> UrlsCrawled)
 	{
 		
-		this.UrlsToCrawl = UrlsToCrawl;
-		this.UrlsCrawled = UrlsCrawled;
 
+	}
+	
+	public Crawler()
+	{
+		
 	}
 	
 	public void getInnerUrl()
@@ -57,7 +64,7 @@ public class Crawler {
 			UrlsCrawled.add(cl);
 			
 			for (Element link : hyperLinks) {
-//				System.out.println("\nlink : " + ((Node)link).attr("abs:href"));
+				System.out.println("\nlink : " + ((Node)link).attr("abs:href"));
 //	//			list.add(((Node)link).attr("abs:href"));
 				Link l = new Link();
 				l.setLevel(this.level+1);
@@ -67,6 +74,7 @@ public class Crawler {
 			}
 			
 		} catch (IOException e) {
+			logger.error(e);
 			e.printStackTrace();
 		}
 		
@@ -74,24 +82,36 @@ public class Crawler {
 	
 	public void PollContinuously()
 	{
+		int depth = 1;
+		logger.entry();
+		
+		while (UrlsToCrawl.peek()!= null )
+		{
+			
 		Link toCrawl = new Link();
 		toCrawl = UrlsToCrawl.poll();
 		this.inputUrl = toCrawl.getLink();
 		this.level = toCrawl.getLevel();
-		boolean flag = true;
-		
-		for(Link l : UrlsCrawled) 
+		if (depth>=this.level)
 		{
-			if(l.getLink().equals(inputUrl))
+			boolean flag = true; // hash set find method
+			
+			for(Link l : UrlsCrawled)
 			{
-			flag = false;	
+				if(l.getLink().equals(inputUrl))
+				{
+					flag = false;	
+				}
+			}
+		
+			if (flag)
+			{
+				getInnerUrl();
 			}
 		}
 		
-		if (flag)
-		{
-			getInnerUrl();
 		}
+		logger.exit();
 	}
 	
 	public String getInputUrl() {
