@@ -118,9 +118,6 @@ public class Crawler {
 	{
 		int depth = 1;
 		logger.entry();
-		
-		while (UrlsToCrawl.peek()!= null )
-		{
 			
 		Link toCrawl = new Link();
 		toCrawl = UrlsToCrawl.poll();
@@ -161,7 +158,7 @@ public class Crawler {
 			
 		}
 		
-		}
+		
 		logger.exit();
 	}
 	

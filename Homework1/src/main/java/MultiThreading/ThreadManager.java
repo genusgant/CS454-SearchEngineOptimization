@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import crawler.Crawler;
+import crawler.CrawlerManager;
 
 
 
@@ -32,7 +33,13 @@ public class ThreadManager implements Runnable {
 	      logger.trace("Running " +  threadName );
 	      try {
 	    	  
+	    	  while (CrawlerManager.UrlsToCrawl.peek()!= null )
+	    		  
+	  		  {
+	    		  
 	    	  crawl.PollContinuously();
+	    	  
+	  		  }
 
 	          Thread.sleep(100);
 	         
