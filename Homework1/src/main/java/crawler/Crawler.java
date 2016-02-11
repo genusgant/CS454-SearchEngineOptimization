@@ -114,7 +114,7 @@ public class Crawler {
 		logger.exit();
 	}
 	
-	public void PollContinuously()
+	public synchronized void PollContinuously()
 	{
 		int depth = 1;
 		logger.entry();
@@ -149,7 +149,7 @@ public class Crawler {
 				UrlsCrawled.add(l1);
 				
 				for (Element link : ExtLinks) {
-					logger.trace("\nlink : " + ((Node)link).attr("abs:href"));
+					logger.trace("link : " + ((Node)link).attr("abs:href"));
 					
 					Link l2 = new Link();
 					l2.setLevel(this.level+1);
