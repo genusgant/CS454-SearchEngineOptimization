@@ -22,7 +22,7 @@ public class Crawler {
 	
 	private String inputUrl;
 	private int level;
-	private List[] ExtLinks;
+	private Elements ExtLinks;
 	private Document source;
 	public static Queue<Link> UrlsToCrawl;
 	public static Queue<Link> UrlsCrawled;
@@ -80,7 +80,7 @@ public class Crawler {
 		
 	}
 	
-	public void PollContinuously()
+	public void oPollContinuously()
 	{
 		int depth = 1;
 		logger.entry();
@@ -114,16 +114,86 @@ public class Crawler {
 		logger.exit();
 	}
 	
+	public void PollContinuously()
+	{
+		int depth = 1;
+		logger.entry();
+		
+		while (UrlsToCrawl.peek()!= null )
+		{
+			
+		Link toCrawl = new Link();
+		toCrawl = UrlsToCrawl.poll();
+		this.inputUrl = toCrawl.getLink();
+		this.level = toCrawl.getLevel();
+		if (depth>=this.level)
+		{
+			boolean flag = true; // hash set find method
+			
+			for(Link l : UrlsCrawled)
+			{
+				if(l.getLink().equals(this.inputUrl))
+				{
+					flag = false;	
+				}
+			}
+		
+			if (flag)
+			{
+				
+				ExtLinks = getInnerUrl(this.inputUrl);
+				
+				Link l1 = new Link();
+				l1.setLevel(this.level);
+				l1.setLink(this.inputUrl);
+				UrlsCrawled.add(l1);
+				
+				for (Element link : ExtLinks) {
+					logger.trace("\nlink : " + ((Node)link).attr("abs:href"));
+					
+					Link l2 = new Link();
+					l2.setLevel(this.level+1);
+					l2.setLink(((Node)link).attr("abs:href"));
+					UrlsToCrawl.add(l2);
+
+				}
+			}			
+			
+		}
+		
+		}
+		logger.exit();
+	}
+	
+	public static Elements getInnerUrl(String inputUrl)
+	{
+		Elements hyperLinks = null;
+		try {
+			
+			Document source;
+			
+			source = Jsoup.connect(inputUrl).userAgent("User-Agent").timeout(10000).execute().parse();
+            
+			hyperLinks = source.select("a[href]");
+			
+		} catch (IOException e) {
+			logger.error(e);
+			e.printStackTrace();
+		}
+		return hyperLinks;
+		
+	}
+	
 	public String getInputUrl() {
 		return inputUrl;
 	}
 	public void setInputUrl(String inputUrl) {
 		this.inputUrl = inputUrl;
 	}
-	public List[] getExtLinks() {
+	public Elements getExtLinks() {
 		return ExtLinks;
 	}
-	public void setExtLinks(List[] extLinks) {
+	public void setExtLinks(Elements extLinks) {
 		ExtLinks = extLinks;
 	}
 	public Document getSource() {
