@@ -2,6 +2,9 @@ package database;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +15,12 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 import crawler.Crawler;
+import model.Raw;
+
 
 public class DbConnect {
 	
@@ -91,5 +98,45 @@ public class DbConnect {
     }
 	
 	
+	public ArrayList<Raw> Retrive(int s, int l) {
+		
+		ArrayList<Raw> list = new ArrayList<Raw>();
 
+        try {
+        	
+           	DBCursor cursor = collection.find().skip(s).limit(l);
+ 
+        		
+            while (cursor.hasNext()) { 
+
+               DBObject resultElement = cursor.next();
+
+               Map resultElementMap = resultElement.toMap();
+
+               Collection resultValues = resultElementMap.values();
+               
+               Raw r = new Raw(resultValues.toArray()[1].toString(), resultValues.toArray()[2].toString(), resultValues.toArray()[3].toString());
+               
+               list.add(r);
+
+            }
+
+        }
+        catch (MongoException e) {
+        	
+        	logger.error(e);
+        	e.printStackTrace();
+            return null;
+            
+        }
+
+        return list;
+    }
+
+	
+	
+	
+	
+	
+	
 }

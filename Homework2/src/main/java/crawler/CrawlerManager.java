@@ -28,7 +28,7 @@ public class CrawlerManager {
 	public static void main(String[] args) throws InterruptedException {
 		
 		Link InitialUrl = new Link();		
-		InitialUrl.setLink("https://www.calstatela.edu");
+		InitialUrl.setLink("http://www.starbucks.com/");
 		InitialUrl.setLevel(0);
 		int counter = 0;
 		

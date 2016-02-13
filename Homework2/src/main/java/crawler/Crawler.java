@@ -25,7 +25,7 @@ import model.Link;
 
 public class Crawler {
 	
-	private static final DbClient connect = new DbClient("calstatela");
+	private static final DbClient connect = new DbClient("starbucks");
 	
 	final static Logger logger = LogManager.getLogger(Crawler.class.getName());
 	
