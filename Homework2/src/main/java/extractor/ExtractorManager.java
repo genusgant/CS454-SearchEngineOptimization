@@ -30,7 +30,7 @@ public class ExtractorManager {
 		
 		
 		
-		System.out.println("hi");
+		e1.PollContinuously();
 		
         
 
@@ -41,7 +41,7 @@ public class ExtractorManager {
 		
 		ArrayList<Raw> list = new ArrayList<Raw>();
 		
-		list = connect.Retrive(3480);
+		list = connect.Retrive(3475);
 		
 		if (list!= null && !list.isEmpty())
 		{

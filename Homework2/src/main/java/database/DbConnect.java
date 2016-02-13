@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -76,6 +77,47 @@ public class DbConnect {
            	document.put("Url", link);
            	document.put("Source", doc);
            	document.put("Date Time", date);
+
+//           	BasicDBObject documentDetail = new BasicDBObject();
+//           	documentDetail.put("records", 99);
+//           	documentDetail.put("index", "vps_index1");
+//           	documentDetail.put("active", "true");
+//           	document.put("detail", documentDetail);
+
+           	collection.insert(document);
+
+        }
+        catch (MongoException e) {
+        	
+        	logger.error(e);
+        	e.printStackTrace();
+            return false;
+            
+        }
+
+        return true;
+    }
+	
+	
+	public boolean Insert(String url, String title, String path, String crawldate, String bodytext, String description, String keywords, ArrayList<String> metadata, ArrayList<String> Img, ArrayList<String> script, ArrayList<String> imports, ArrayList<String> links, String extractdate) {
+
+		
+		
+        try {
+        	BasicDBObject document = new BasicDBObject();
+           	document.put("Url", url);
+           	document.put("Title", title);
+           	document.put("FilePath", path);
+           	document.put("CrawlDateTime", crawldate);
+           	document.put("BodyText", bodytext);
+           	document.put("Description", description);
+           	document.put("Keywords", keywords);
+           	document.put("Metadata", metadata);
+           	document.put("Images", Img);
+           	document.put("Scripts", script);
+           	document.put("Import", imports);
+           	document.put("HyperLinks", links);
+           	document.put("ExtractDateTime", extractdate);
 
 //           	BasicDBObject documentDetail = new BasicDBObject();
 //           	documentDetail.put("records", 99);

@@ -1,9 +1,17 @@
 package extractor;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Queue;
 
@@ -36,6 +44,12 @@ public class Extractor {
 		this.UrlsToExtract = UrlsToExtract;
 
 	}
+	
+	
+	public Extractor() {
+
+	}
+	
 	
 	
 	
@@ -72,55 +86,142 @@ public class Extractor {
 		ViewSource = input.getSource();
 		CrawlDate = input.getDateTime();
 		
-		
-		
-		Elements hyperLinks = null;
-		
-		
-		
 		try {
-			
-			Document source;
+						
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			   
 			Date date = new Date();;
 			
-			source = Jsoup.connect(inputUrl).userAgent("User-Agent").timeout(10000).execute().parse();
-            
-			hyperLinks = source.select("a[href]");
+			String filename = URLEncoder.encode(inputUrl, "UTF-8");
+			Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+						
+			WriteFile(s+"/data/"+filename+".html", ViewSource);
+						
+			Document source = Jsoup.parse(ViewSource);
 			
-//			hyperLinks = Jsoup.connect(inputUrl).userAgent("User-Agent").timeout(10000).execute().parse().select("a[href]");
+			String title = "";
+			if(source.title()!=null)
+				title = source.title();
+			String Bodytext = "";
+			if(source.body().text()!=null)
+				Bodytext = source.body().text();
 			
-			connect.Insert(inputUrl, source.outerHtml(),dateFormat.format(date).toString());
+			String description = "";
+			try
+			{
+			if(source.select("meta[name=description]").get(0)!=null)
+				description = source.select("meta[name=description]").get(0).attr("content");
+			}catch(IndexOutOfBoundsException e){
+				logger.error(e);
+			}
 			
-		} catch (UnsupportedMimeTypeException e) {
+			String keywords = "";
+			try
+			{
+			if(source.select("meta[name=keywords]").first()!=null)
+				keywords = source.select("meta[name=keywords]").first().attr("content");
+			}catch(NullPointerException e){
+				logger.error(e);
+			}
 			
-	        logger.error("Unsupported Mime type. Aborting crawling for URL: " + inputUrl);
-	        e.printStackTrace();
-	        
-	    } catch (MalformedURLException e) {
-
-	    	logger.error("Unsupported protocol for URL: " + inputUrl);
-	        e.printStackTrace();
-	        
-	    } catch (HttpStatusException e) {
-	    	
-	    	logger.error("Error (status=" + e.getStatusCode() + ") fetching URL: " + inputUrl);
-	        e.printStackTrace();
-	        
-	    }catch (IllegalArgumentException e) {
+			
+			
+			Elements media = source.select("[src]");
+			Elements imports = source.select("link[href]");
+		    Elements links = source.select("a[href]");
+		    Elements metadata = source.select("META");
+		    
+		    
+		    ArrayList<String> Img = new ArrayList<String>();
+		    ArrayList<String> Script = new ArrayList<String>();
+		    ArrayList<String> Imports = new ArrayList<String>();
+		    ArrayList<String> Links = new ArrayList<String>();
+		    ArrayList<String> Metadata = new ArrayList<String>();
+		    
+		    
+		    for (Element src : media) {
+		    	if (src!= null && !src.equals(""))
+	        	{
+		    		if (src.tagName().equals("img"))
+		            {
+		                Img.add(src.attr("abs:src"));
+		            }
+		            else
+		            {
+		            	Script.add(src.attr("abs:src"));
+		            }
+	        	}   	
+	           
+	        }
+		    
+		    
+		    for (Element link : imports) {
+		    	
+		    	if (link!= null && !link.equals(""))
+	        	{
+		    		Imports.add(link.attr("abs:href"));
+	        	}
+	            
+	        }
+		    
+		    for (Element link : links) {
+	        	if (link!= null && !link.equals(""))
+	        	{
+	        	
+	        		Links.add(link.attr("abs:href"));
+	        	
+	        	}
+	        }
+		     
+		    
+		    for (Element meta : metadata)
+		    {
+		    	if (meta!= null && !meta.equals(""))
+	        	{
+		    		
+		    		for (Element m : meta.getAllElements())
+		    		{
+		    			if (m!= null && !m.equals(""))
+		    			{
+		    				Metadata.add(m.toString());
+		    			}
+		    			
+		    		}
+			        	
+	        	}
+		    }
+		 
+		
+	        connect.Insert(inputUrl, title, s+"/data/"+filename+".html", CrawlDate, Bodytext, description, keywords, Metadata, Img, Script, Imports, Links, dateFormat.format(date).toString());
+			
+			
+		} catch (IllegalArgumentException e) {
 	    	
 	    	logger.error(" IllegalArgumentException : Must supply a valid URL: " + inputUrl);
 	        e.printStackTrace();
 	        
-	    }catch (IOException e) {
-	    	
-	    	logger.error("Timeout fetching URL: " + inputUrl);
-	        e.printStackTrace();
-	        
-	    }
+	    }catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
+	}
+	
+	public static void WriteFile(String file, String ViewSource)
+	{
+		BufferedWriter bw;
+		try {
+
+			bw = new BufferedWriter(new FileWriter(file));
+		
+		bw.write(ViewSource);
+		bw.close();
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
