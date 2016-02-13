@@ -19,7 +19,7 @@ public class ExtractorManager {
 	
 	final static Logger logger = LogManager.getLogger(CrawlerManager.class.getName());
 	
-	private static final DbClient connect = new DbClient("starbucks");
+	private static final DbClient connect = new DbClient(CrawlerManager.Coll);
 	
 	public static Queue<Raw> UrlsToExtract = new LinkedList<Raw>(); 
 	
@@ -27,6 +27,8 @@ public class ExtractorManager {
 	
 	public static int end = 0;
 	 
+	
+	public static boolean status = true;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -93,6 +95,33 @@ public class ExtractorManager {
 				e.printStackTrace();
 			}
 		}
+		
+		
+		try {
+			Thread.sleep(2000);
+			
+			logger.trace("waiting...");
+			
+			RetriveData();
+			
+		
+		while(UrlsToExtract.peek()!= null)
+		{
+			
+		}
+		
+		if (UrlsToExtract.size()==0)
+		{
+			status = false;
+		}
+		
+		Thread.sleep(1000);
+		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		logger.trace("Extraction completed Successfully...");
 		logger.trace("Totally "+start+" pages extracted... ");

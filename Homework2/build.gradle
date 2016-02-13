@@ -51,3 +51,10 @@ task extractor(type: JavaExec) {
 
     main = 'extractor.ExtractorManager'
 }
+
+
+task data(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'Dump.DataDump'
+}

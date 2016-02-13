@@ -2,6 +2,7 @@ package extractor;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -26,6 +27,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import crawler.Crawler;
+import crawler.CrawlerManager;
 import database.DbClient;
 import model.Link;
 import model.Raw;
@@ -37,7 +39,7 @@ public class Extractor {
 	
 	final static Logger logger = LogManager.getLogger(Extractor.class.getName());
 	
-	private static final DbClient connect = new DbClient("starbucks"+"_ext");
+	private static final DbClient connect = new DbClient(CrawlerManager.Coll+"_ext");
 
 	public Extractor(Queue<Raw> UrlsToExtract) {
 		
@@ -98,6 +100,7 @@ public class Extractor {
 			String s = currentRelativePath.toAbsolutePath().toString();
 						
 			WriteFile(s+"/data/"+filename+".html", ViewSource);
+			
 						
 			Document source = Jsoup.parse(ViewSource);
 			
@@ -221,9 +224,13 @@ public class Extractor {
 		bw.write(ViewSource);
 		bw.close();
 		
-		} catch (IOException e) {
+		} catch(FileNotFoundException e)
+		{
+			logger.error(e);
+		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 

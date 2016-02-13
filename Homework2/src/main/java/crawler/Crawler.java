@@ -25,7 +25,7 @@ import model.Link;
 
 public class Crawler {
 	
-	private static final DbClient connect = new DbClient("starbucks");
+	private static final DbClient connect = new DbClient(CrawlerManager.Coll);
 	
 	final static Logger logger = LogManager.getLogger(Crawler.class.getName());
 	
@@ -79,77 +79,13 @@ public class Crawler {
 		
 	}
 	
-	public void getInnerUrl()
-	{
-		try {
-			Elements hyperLinks;			
-			
-			source = Jsoup.connect(inputUrl).userAgent("User-Agent").timeout(500).execute().parse();
-            
-			hyperLinks = source.select("a[href]");
-			
-			Link cl = new Link();
-			cl.setLevel(this.level);
-			cl.setLink(inputUrl);
-			UrlsCrawled.add(cl);
-			
-			for (Element link : hyperLinks) {
-				System.out.println("\nlink : " + ((Node)link).attr("abs:href"));
-//	//			list.add(((Node)link).attr("abs:href"));
-				Link l = new Link();
-				l.setLevel(this.level+1);
-				l.setLink(((Node)link).attr("abs:href"));
-				UrlsToCrawl.add(l);
-//				System.out.println("text : " + ((org.jsoup.nodes.Element) link).text());	
-			}
-			
-		} catch (IOException e) {
-			logger.error(e);
-			e.printStackTrace();
-		}
-		
-	}
 	
-	public void oPollContinuously()
-	{
-		int depth = 1;
-		logger.entry();
-		
-		while (UrlsToCrawl.peek()!= null )
-		{
-			
-		Link toCrawl = new Link();
-		toCrawl = UrlsToCrawl.poll();
-		this.inputUrl = toCrawl.getLink();
-		this.level = toCrawl.getLevel();
-		if (depth>=this.level)
-		{
-			boolean flag = true; // hash set find method
-			
-			if (UrlsCrawled.size()>0)
-			{
-				for(Link l : UrlsCrawled)
-				{
-					if(l.getLink().equals(inputUrl))
-					{
-						flag = false;	
-					}
-				}
-			}
-		
-			if (flag)
-			{
-				getInnerUrl();
-			}
-		}
-		
-		}
-		logger.exit();
-	}
+	
+	
 	
 	public static synchronized void PollContinuously()
 	{
-		int depth = 2;
+		int depth = CrawlerManager.depth;
 //		logger.entry();		
 		
 		String inputUrl ="";
