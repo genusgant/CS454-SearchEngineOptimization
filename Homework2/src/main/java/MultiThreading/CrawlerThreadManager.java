@@ -33,7 +33,7 @@ public class CrawlerThreadManager implements Runnable {
 	      logger.trace("Running " +  threadName );
 	      try {
 	    	  
-	    	  while (CrawlerManager.UrlsToCrawl.peek()!= null )
+	    	  while (CrawlerManager.status )
 	    		  
 	  		  {
 	    		  

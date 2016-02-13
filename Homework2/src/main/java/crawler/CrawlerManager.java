@@ -28,6 +28,8 @@ public class CrawlerManager {
 	public static int o_count = 0; 
 	public static int n_count = 0;
 	
+	public static boolean status = true;
+	
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -77,6 +79,14 @@ public class CrawlerManager {
 		{
 			Thread.sleep(1000); 
 		}
+		
+		
+		if (UrlsToCrawl.size()==0)
+		{
+			status = false;
+		}
+		
+		Thread.sleep(1000);
 
 		for (Link l : UrlsCrawled)
 		{
