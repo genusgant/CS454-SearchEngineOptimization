@@ -98,13 +98,13 @@ public class DbConnect {
     }
 	
 	
-	public ArrayList<Raw> Retrive(int s, int l) {
+	public ArrayList<Raw> Retrive(int s) {
 		
 		ArrayList<Raw> list = new ArrayList<Raw>();
 
         try {
         	
-           	DBCursor cursor = collection.find().skip(s).limit(l);
+           	DBCursor cursor = collection.find().skip(s);
  
         		
             while (cursor.hasNext()) { 

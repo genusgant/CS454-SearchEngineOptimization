@@ -8,12 +8,18 @@ public class Raw {
 	
 	
 	
+	public Raw() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Raw(String url, String source, String dateTime) {
 		super();
 		Url = url;
 		Source = source;
 		DateTime = dateTime;
 	}
+	
 	public String getUrl() {
 		return Url;
 	}

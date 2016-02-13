@@ -22,30 +22,44 @@ public class ExtractorManager {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		ArrayList<Raw> list = new ArrayList<Raw>();
+		
+		RetriveData();
 		
 		
-		Extractor e1 = new Extractor();
+		Extractor e1 = new Extractor(UrlsToExtract);
 		
 		
-		list = connect.Retrive(0,1);
-		
-		if (list != null )
 		
 		System.out.println("hi");
 		
-		
-		
-		
-		
-		
-		
-		
-		
-        
-        
         
 
+	}
+	
+	public static void RetriveData()
+	{
+		
+		ArrayList<Raw> list = new ArrayList<Raw>();
+		
+		list = connect.Retrive(3480);
+		
+		if (list!= null && !list.isEmpty())
+		{
+			int count = list.size();
+			
+			for (Raw r : list)
+			{
+				UrlsToExtract.add(r);
+			}
+			
+			System.out.println("Records Retrived : "+count);
+			
+			start = start + count;			
+			
+			System.out.println("Total Records Retrived : "+start);
+			
+			System.out.println("Records added : "+UrlsToExtract.size());
+		}
 	}
 
 }
