@@ -3,6 +3,7 @@ package MultiThreading;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import crawler.CrawlerManager;
 import extractor.Extractor;
 import extractor.ExtractorManager;
 
@@ -30,7 +31,7 @@ public class ExtractorThreadManager implements Runnable{
 	      try {
 	    	  
 //	    	  while (ExtractorManager.UrlsToExtract.peek()!= null )
-	    	  while(ExtractorManager.status)
+	    	  while(ExtractorManager.status )//|| CrawlerManager.status)
 	    		  
 	  		  {
 	    		  

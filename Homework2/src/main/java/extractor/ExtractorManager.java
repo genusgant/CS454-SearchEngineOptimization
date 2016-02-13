@@ -92,26 +92,26 @@ public class ExtractorManager {
 		Extractor e5 = new Extractor();
 		ExtractorThreadManager t15 = new ExtractorThreadManager("Ext Thread 15",e5);
 		t15.start();
-		
-		Extractor e6 = new Extractor();
-		ExtractorThreadManager t16 = new ExtractorThreadManager("Ext Thread 16",e6);
-		t16.start();
-		
-		Extractor e7 = new Extractor();
-		ExtractorThreadManager t17 = new ExtractorThreadManager("Ext Thread 17",e7);
-		t17.start();
-		
-		Extractor e8 = new Extractor();
-		ExtractorThreadManager t18 = new ExtractorThreadManager("Ext Thread 18",e8);
-		t18.start();
-		
-		Extractor e9 = new Extractor();
-		ExtractorThreadManager t19 = new ExtractorThreadManager("Ext Thread 19",e9);
-		t19.start();
-		
-		Extractor e10 = new Extractor();
-		ExtractorThreadManager t20 = new ExtractorThreadManager("Ext Thread 20",e10);
-		t20.start();
+//		
+//		Extractor e6 = new Extractor();
+//		ExtractorThreadManager t16 = new ExtractorThreadManager("Ext Thread 16",e6);
+//		t16.start();
+//		
+//		Extractor e7 = new Extractor();
+//		ExtractorThreadManager t17 = new ExtractorThreadManager("Ext Thread 17",e7);
+//		t17.start();
+//		
+//		Extractor e8 = new Extractor();
+//		ExtractorThreadManager t18 = new ExtractorThreadManager("Ext Thread 18",e8);
+//		t18.start();
+//		
+//		Extractor e9 = new Extractor();
+//		ExtractorThreadManager t19 = new ExtractorThreadManager("Ext Thread 19",e9);
+//		t19.start();
+//		
+//		Extractor e10 = new Extractor();
+//		ExtractorThreadManager t20 = new ExtractorThreadManager("Ext Thread 20",e10);
+//		t20.start();
 		
 		
 		
@@ -134,12 +134,25 @@ public class ExtractorManager {
 		
 		
 		try {
+			
+			while (CrawlerManager.status)
+			{
 			Thread.sleep(2000);
 			
 			logger.trace("waiting...");
 			
+			
+			
 			RetriveData();
 			
+			Thread.sleep(2000);
+			
+			if(UrlsToExtract.size()==0)
+				
+				if(CrawlerManager.UrlsToCrawl.size()==0)
+			
+			CrawlerManager.end();
+			}
 		
 		while(UrlsToExtract.peek()!= null)
 		{
@@ -158,9 +171,19 @@ public class ExtractorManager {
 			e.printStackTrace();
 		}
 		
+		if (CrawlerManager.UrlsToCrawl.size()==0)
+		{
 		
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		logger.trace("Extraction completed Successfully...");
 		logger.trace("Totally "+start+" pages extracted... ");
+		
+		}
 		
 		
 	}

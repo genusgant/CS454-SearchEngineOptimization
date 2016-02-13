@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import MultiThreading.CrawlerThreadManager;
+import MultiThreading.ExtractorThread;
 import extractor.ExtractorManager;
 import model.Link;
 
@@ -103,23 +104,36 @@ public class CrawlerManager {
 		
 		if(doExtract)
 		{
-			ExtractorManager ex = new ExtractorManager();
-			ex.execute();
+//			ExtractorManager ex = new ExtractorManager();
+////			ex.execute();
+			ExtractorManager.execute();
+//			ExtractorThread ET = new ExtractorThread("Extractor Thread et",ex);
+//			logger.trace("Extractor Started");
 		}
 		
 		
+		
+//		while (UrlsToCrawl.peek()!= null )
+//		{
+//			Thread.sleep(1000); 
+//		}
+//		
+//		logger.trace("waiting...");
+//		
+//		if (UrlsToCrawl.size()==0)
+//		{
+//			status = false;
+//		}
 		
 		while (UrlsToCrawl.peek()!= null )
 		{
-			Thread.sleep(1000); 
+			Thread.sleep(1000);
+			logger.trace("waiting..."+UrlsToCrawl.size());
 		}
-		
-		logger.trace("waiting...");
-		
 		if (UrlsToCrawl.size()==0)
-		{
-			status = false;
-		}
+			{
+				status = false;
+			}
 		
 		Thread.sleep(1000);
 
@@ -137,6 +151,11 @@ public class CrawlerManager {
 
 	}
 	
+	
+	public static void end()
+	{
+		CrawlerManager.status= false;
+	}
 	
 	
 
