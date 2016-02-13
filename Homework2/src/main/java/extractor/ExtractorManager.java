@@ -17,7 +17,7 @@ import model.Raw;
 
 public class ExtractorManager {
 	
-	final static Logger logger = LogManager.getLogger(CrawlerManager.class.getName());
+	final static Logger logger = LogManager.getLogger(ExtractorManager.class.getName());
 	
 	private static final DbClient connect = new DbClient(CrawlerManager.Coll);
 	
@@ -32,6 +32,42 @@ public class ExtractorManager {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		
+		execute();
+        
+
+	}
+	
+	public static void RetriveData()
+	{
+		
+		ArrayList<Raw> list = new ArrayList<Raw>();
+		
+		list = connect.Retrive(start);
+		
+		if (list!= null && !list.isEmpty())
+		{
+			int count = list.size();
+			
+			for (Raw r : list)
+			{
+				UrlsToExtract.add(r);
+			}
+			
+			logger.trace("Records Retrived : "+count);
+			
+			start = start + count;			
+			
+			logger.trace("Total Records Retrived : "+start);
+			
+			logger.trace("Records added : "+UrlsToExtract.size());
+		}
+	}
+
+	
+	public static void execute()
+	{
 		
 		
 		RetriveData();
@@ -125,34 +161,7 @@ public class ExtractorManager {
 		
 		logger.trace("Extraction completed Successfully...");
 		logger.trace("Totally "+start+" pages extracted... ");
-        
-
+		
+		
 	}
-	
-	public static void RetriveData()
-	{
-		
-		ArrayList<Raw> list = new ArrayList<Raw>();
-		
-		list = connect.Retrive(start);
-		
-		if (list!= null && !list.isEmpty())
-		{
-			int count = list.size();
-			
-			for (Raw r : list)
-			{
-				UrlsToExtract.add(r);
-			}
-			
-			logger.trace("Records Retrived : "+count);
-			
-			start = start + count;			
-			
-			logger.trace("Total Records Retrived : "+start);
-			
-			logger.trace("Records added : "+UrlsToExtract.size());
-		}
-	}
-
 }
