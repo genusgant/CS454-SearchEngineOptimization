@@ -8,20 +8,20 @@ import crawler.CrawlerManager;
 
 
 
-public class ThreadManager implements Runnable {
+public class CrawlerThreadManager implements Runnable {
 	
-	final static Logger logger = LogManager.getLogger(ThreadManager.class.getName());
+	final static Logger logger = LogManager.getLogger(CrawlerThreadManager.class.getName());
 	
 	private Thread t;
 	private String threadName;
 	private Crawler crawl;
 
-	public ThreadManager() {
+	public CrawlerThreadManager() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ThreadManager(String threadName, Crawler crawler) {
+	public CrawlerThreadManager(String threadName, Crawler crawler) {
 		super();
 		this.threadName = threadName;
 		this.crawl = crawler;

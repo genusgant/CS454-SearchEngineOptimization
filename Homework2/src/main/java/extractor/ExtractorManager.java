@@ -4,11 +4,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import MultiThreading.CrawlerThreadManager;
+import MultiThreading.ExtractorThreadManager;
+import crawler.Crawler;
+import crawler.CrawlerManager;
 import database.DbClient;
 import model.Link;
 import model.Raw;
 
 public class ExtractorManager {
+	
+	final static Logger logger = LogManager.getLogger(CrawlerManager.class.getName());
 	
 	private static final DbClient connect = new DbClient("starbucks");
 	
@@ -27,11 +36,66 @@ public class ExtractorManager {
 		
 		
 		Extractor e1 = new Extractor(UrlsToExtract);
+		ExtractorThreadManager t11 = new ExtractorThreadManager("Ext Thread 11",e1);
+		t11.start();
+		
+		Extractor e2 = new Extractor();
+		ExtractorThreadManager t12 = new ExtractorThreadManager("Ext Thread 12",e2);
+		t12.start();
+
+		Extractor e3 = new Extractor();
+		ExtractorThreadManager t13 = new ExtractorThreadManager("Ext Thread 13",e3);
+		t13.start();
+
+		Extractor e4 = new Extractor();
+		ExtractorThreadManager t14 = new ExtractorThreadManager("Ext Thread 14",e4);
+		t14.start();
+
+		Extractor e5 = new Extractor();
+		ExtractorThreadManager t15 = new ExtractorThreadManager("Ext Thread 15",e5);
+		t15.start();
+		
+		Extractor e6 = new Extractor();
+		ExtractorThreadManager t16 = new ExtractorThreadManager("Ext Thread 16",e6);
+		t16.start();
+		
+		Extractor e7 = new Extractor();
+		ExtractorThreadManager t17 = new ExtractorThreadManager("Ext Thread 17",e7);
+		t17.start();
+		
+		Extractor e8 = new Extractor();
+		ExtractorThreadManager t18 = new ExtractorThreadManager("Ext Thread 18",e8);
+		t18.start();
+		
+		Extractor e9 = new Extractor();
+		ExtractorThreadManager t19 = new ExtractorThreadManager("Ext Thread 19",e9);
+		t19.start();
+		
+		Extractor e10 = new Extractor();
+		ExtractorThreadManager t20 = new ExtractorThreadManager("Ext Thread 20",e10);
+		t20.start();
 		
 		
 		
-		e1.PollContinuously();
+		while(UrlsToExtract.peek()!= null)
+		{
+			try {
+				Thread.sleep(1000);
+			
+			
+			if (UrlsToExtract.size()<100)
+			{
+				RetriveData();
+			}
+			
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
+		logger.trace("Extraction completed Successfully...");
+		logger.trace("Totally "+start+" pages extracted... ");
         
 
 	}
@@ -41,7 +105,7 @@ public class ExtractorManager {
 		
 		ArrayList<Raw> list = new ArrayList<Raw>();
 		
-		list = connect.Retrive(3475);
+		list = connect.Retrive(start);
 		
 		if (list!= null && !list.isEmpty())
 		{
@@ -52,13 +116,13 @@ public class ExtractorManager {
 				UrlsToExtract.add(r);
 			}
 			
-			System.out.println("Records Retrived : "+count);
+			logger.trace("Records Retrived : "+count);
 			
 			start = start + count;			
 			
-			System.out.println("Total Records Retrived : "+start);
+			logger.trace("Total Records Retrived : "+start);
 			
-			System.out.println("Records added : "+UrlsToExtract.size());
+			logger.trace("Records added : "+UrlsToExtract.size());
 		}
 	}
 

@@ -87,6 +87,8 @@ public class Extractor {
 		CrawlDate = input.getDateTime();
 		
 		try {
+			
+			logger.trace("Extracting : "+inputUrl);
 						
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();;
@@ -202,6 +204,7 @@ public class Extractor {
 	        
 	    }catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
+	    	logger.error(e1);
 			e1.printStackTrace();
 		}
 		
