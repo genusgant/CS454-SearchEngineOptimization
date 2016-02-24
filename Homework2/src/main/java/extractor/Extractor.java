@@ -117,7 +117,7 @@ public class Extractor {
 			if(source.select("meta[name=description]").get(0)!=null)
 				description = source.select("meta[name=description]").get(0).attr("content");
 			}catch(IndexOutOfBoundsException e){
-				logger.error(e);
+				logger.error("description not found");
 			}
 			
 			String keywords = "";
@@ -126,7 +126,6 @@ public class Extractor {
 			if(source.select("meta[name=keywords]").first()!=null)
 				keywords = source.select("meta[name=keywords]").first().attr("content");
 			}catch(NullPointerException e){
-				logger.error(e);
 			}
 			
 			

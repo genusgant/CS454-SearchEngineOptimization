@@ -31,7 +31,7 @@ public class ExtractorThreadManager implements Runnable{
 	      try {
 	    	  
 //	    	  while (ExtractorManager.UrlsToExtract.peek()!= null )
-	    	  while(ExtractorManager.status )//|| CrawlerManager.status)
+	    	  while(ExtractorManager.status || CrawlerManager.status)
 	    		  
 	  		  {
 	    		  
