@@ -34,17 +34,21 @@ public class CrawlerManager {
 
 	public static void main(String[] args) throws InterruptedException {
 		
-		depth = Integer.parseInt(args[1]) ;
-		String arg = args[3];
+//		depth = Integer.parseInt(args[1]) ;
+//		String arg = args[3];
+//		
+//		if( args.length>4)
+//
+//		{
+//			if(args[4].trim().equals("-e"))
+//			{
+//				doExtract = true;
+//			}
+//		}
 		
-		if( args.length>4)
-
-		{
-			if(args[4].trim().equals("-e"))
-			{
-				doExtract = true;
-			}
-		}
+		depth = 1 ;
+		String arg = "http://www.calstatela.edu";
+		doExtract = true;
 		
 		
 		
@@ -104,11 +108,10 @@ public class CrawlerManager {
 		
 		if(doExtract)
 		{
-//			ExtractorManager ex = new ExtractorManager();
-////			ex.execute();
-			ExtractorManager.execute();
-//			ExtractorThread ET = new ExtractorThread("Extractor Thread et",ex);
-//			logger.trace("Extractor Started");
+			logger.trace("Starting Extractor process...");
+			ExtractorManager ex = new ExtractorManager();
+			ExtractorThread ET = new ExtractorThread("Extractor Thread et",ex);
+			ET.start();
 		}
 		
 		
@@ -127,15 +130,16 @@ public class CrawlerManager {
 		
 		while (UrlsToCrawl.peek()!= null )
 		{
-			Thread.sleep(1000);
-			logger.trace("waiting..."+UrlsToCrawl.size());
+			
+			logger.trace("Crawling..."+UrlsToCrawl.size()+" to go...");
+			Thread.sleep(5000);
 		}
-		if (UrlsToCrawl.size()==0)
-			{
-				status = false;
-			}
 		
-		Thread.sleep(1000);
+		if (UrlsToCrawl.size()==0)
+		{
+			logger.trace("crawler que is empty..."+UrlsToCrawl.size());
+			status = false;
+		}
 
 		for (Link l : UrlsCrawled)
 		{
