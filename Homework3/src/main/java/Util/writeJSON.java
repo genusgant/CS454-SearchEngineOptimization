@@ -4,14 +4,17 @@ package Util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import model.Doc;
 import model.Page;
+import model.TDF;
 import model.TF;
 
 
@@ -103,33 +106,50 @@ public class writeJSON {
 
      }
      
-     public static void execute()
-     {
+    public static void execute(ConcurrentMap<String, ArrayList<TDF>> input)
+    {
+    	
+    	System.out.println("input  ....."+input);
+    	 
+    	JSONObject obj = new JSONObject();
+    	 
+    	Iterator it = input.entrySet().iterator();
+    	ArrayList<TDF> list = new ArrayList<TDF>();
+    	int counter = 0;
+			
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+				
+			String word = "";
+			word = (String) pairs.getKey();
+			list = (ArrayList<TDF>) pairs.getValue();
+				
+			JSONArray jlist = new JSONArray();
+				
+			for( TDF t : list)
+			{
+				JSONObject obj1 = new JSONObject();
+				obj1.put(t.getsNO(), t.getCount());
+				jlist.add(obj1);
+									
+			}		
+			obj.put(word, jlist);
+			
+		}
 
-	JSONObject obj = new JSONObject();
-	obj.put("name", "mkyong.com");
-	obj.put("age", new Integer(100));
 
-	JSONArray list = new JSONArray();
-	list.add("msg 1");
-	list.add("msg 2");
-	list.add("msg 3");
-
-	obj.put("messages", list);
-
-	try {
-
-		FileWriter file = new FileWriter("c:\\test.json");
-		file.write(obj.toJSONString());
-		file.flush();
-		file.close();
-
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-
-	System.out.print(obj);
-
-     }
+		try {
+	
+			FileWriter file = new FileWriter("C:/DRIVE/big.json");
+			file.write(obj.toJSONString());
+			file.flush();
+			file.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+		
+    }
 
 }
