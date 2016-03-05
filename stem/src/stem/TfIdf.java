@@ -30,6 +30,10 @@ public class TfIdf {
 	}
 	
 	public static void main(String[] args) {
+		
+		
+		try 
+		{
 		 
 		ArrayList<String> doc1 = (ArrayList<String>) Arrays.asList("Lorem", "ipsum", "dolor", "ipsum", "sit", "ipsum");
 		ArrayList<String> doc2 = (ArrayList<String>) Arrays.asList("Vituperata", "incorrupte", "at", "ipsum", "pro", "quo");
@@ -39,6 +43,13 @@ public class TfIdf {
 	    TfIdf calculator = new TfIdf();
 	    double tfidf = calculator.tfIdf(doc1, documents, "ipsum");
 	    System.out.println("TF-IDF (ipsum) = " + tfidf);
+	    
+		}
+		catch(ClassCastException e){
+		e.printStackTrace();
+		}
+		
+		}
 	 
 	}
-}
+
