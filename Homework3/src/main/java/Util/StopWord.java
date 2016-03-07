@@ -128,7 +128,7 @@ public class StopWord {
 			tokenStream.reset();
 		
 			while (tokenStream.incrementToken()) {
-			    String term = charTermAttribute.toString();
+			    String term = charTermAttribute.toString().toLowerCase();
 			    m.compute(term, (k, v) -> v == null ? 1 : v + 1);
 			    
 			}

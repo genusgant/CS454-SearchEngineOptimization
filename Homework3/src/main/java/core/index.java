@@ -2,10 +2,12 @@ package core;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Util.InputReader;
 import extractor.Extractor;
 import extractor.ExtractorManager;
+import link.LinkAnalysisManager;
 import model.Page;
 import model.Raw;
 
@@ -13,7 +15,7 @@ public class index {
 	
 	public static Queue<Raw> UrlsToExtract = new LinkedList<Raw>();
 	
-	public static Queue<Page> UrlsExtracted = new LinkedList<Page>();
+	public static ConcurrentLinkedQueue<Page> UrlsExtracted = new ConcurrentLinkedQueue<Page>();
 	
 
 	public static void main(String[] args) {
@@ -27,7 +29,7 @@ public class index {
 		
 		input = UrlsToExtract.size();
 		
-		Extractor e = new Extractor(UrlsToExtract,UrlsExtracted);
+//		Extractor e = new Extractor(UrlsToExtract,UrlsExtracted);
 		
 		ExtractorManager em = new ExtractorManager();
 		
@@ -48,6 +50,19 @@ public class index {
 		
 		
 		System.out.println("ha ha "+UrlsExtracted.size());
+		
+		
+		//Link analysis
+		
+		LinkAnalysisManager lam = new LinkAnalysisManager(UrlsExtracted);
+		lam.execute();
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 	public static synchronized void extracted(Page p){

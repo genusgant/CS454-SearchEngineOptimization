@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.HttpStatusException;
@@ -38,11 +40,11 @@ public class Extractor {
 	
 	public static Queue<Raw> UrlsToExtract;
 	
-	public static Queue<Page> UrlsExtracted;
+	public static ConcurrentLinkedQueue<Page> UrlsExtracted;
 	
 	final static Logger logger = LogManager.getLogger(Extractor.class.getName());
 
-	public Extractor(Queue<Raw> UrlsToExtract, Queue<Page> UrlsExtracted) {
+	public Extractor(Queue<Raw> UrlsToExtract, ConcurrentLinkedQueue<Page> UrlsExtracted) {
 		
 		this.UrlsToExtract = UrlsToExtract;
 		this.UrlsExtracted = UrlsExtracted;		
@@ -198,7 +200,10 @@ public class Extractor {
 	        	{
 	        	
 	        		if (!link.attr("abs:href").equals(""))
-	        		Links.add(link.attr("abs:href"));
+	        		{
+	        			System.out.println(MD5(link.attr("abs:href")));
+	        		Links.add(MD5(link.attr("abs:href")));
+	        		}
 	        	
 	        	}
 	        }

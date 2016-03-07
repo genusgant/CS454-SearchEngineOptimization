@@ -27,7 +27,7 @@ public class IndexManager {
 	
 //	public static Queue<String> UrlsToIndex;
 	
-	public static Queue<String> UrlsIndexed;
+//	public static Queue<String> UrlsIndexed;
 	
 
 	final static Logger logger = LogManager.getLogger(ExtractorManager.class.getName());
@@ -39,12 +39,14 @@ public class IndexManager {
 	public static ConcurrentMap<String, ArrayList<TDF>> m = new ConcurrentHashMap<>();
 	
 	public static ConcurrentLinkedQueue<File> UrlsToIndex = new ConcurrentLinkedQueue<File>();
+	
+	public static ConcurrentLinkedQueue<File> UrlsIndexed = new ConcurrentLinkedQueue<File>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		executei("C:/DRIVE/Doc - Copy");
-//		executei("C:/DRIVE/Doc");
+//		executei("C:/DRIVE/Doc - Copy");
+		executei("C:/DRIVE/Doc");
 		
 
 	}
@@ -89,42 +91,42 @@ public class IndexManager {
 		IndexerThreadManager t1 = new IndexerThreadManager("Ind Thread 1",e1);
 		t1.start();
 		
-//		Indexer e2 = new Indexer();
-//		IndexerThreadManager t2 = new IndexerThreadManager("Ind Thread 2",e2);
-//		t2.start();
-//
-//		Indexer e3 = new Indexer();
-//		IndexerThreadManager t3 = new IndexerThreadManager("Ind Thread 3",e3);
-//		t3.start();
-//
-//		Indexer e4 = new Indexer();
-//		IndexerThreadManager t4 = new IndexerThreadManager("Ind Thread 4",e4);
-//		t4.start();
-//
-//		Indexer e5 = new Indexer();
-//		IndexerThreadManager t5 = new IndexerThreadManager("Ind Thread 5",e5);
-//		t5.start();
-//		
-//		Indexer e6 = new Indexer();
-//		IndexerThreadManager t6 = new IndexerThreadManager("Ind Thread 6",e6);
-//		t6.start();
-//		
-//		Indexer e7 = new Indexer();
-//		IndexerThreadManager t7 = new IndexerThreadManager("Ind Thread 7",e7);
-//		t7.start();
-//		
-//		Indexer e8 = new Indexer();
-//		IndexerThreadManager t8 = new IndexerThreadManager("Ind Thread 8",e8);
-//		t8.start();
-//		
-//		Indexer e9 = new Indexer();
-//		IndexerThreadManager t9 = new IndexerThreadManager("Ind Thread 9",e9);
-//		t9.start();
-//		
-//		Indexer e10 = new Indexer();
-//		IndexerThreadManager t10 = new IndexerThreadManager("Ind Thread 10",e10);
-//		t10.start();
-//		
+		Indexer e2 = new Indexer();
+		IndexerThreadManager t2 = new IndexerThreadManager("Ind Thread 2",e2);
+		t2.start();
+
+		Indexer e3 = new Indexer();
+		IndexerThreadManager t3 = new IndexerThreadManager("Ind Thread 3",e3);
+		t3.start();
+
+		Indexer e4 = new Indexer();
+		IndexerThreadManager t4 = new IndexerThreadManager("Ind Thread 4",e4);
+		t4.start();
+
+		Indexer e5 = new Indexer();
+		IndexerThreadManager t5 = new IndexerThreadManager("Ind Thread 5",e5);
+		t5.start();
+		
+		Indexer e6 = new Indexer();
+		IndexerThreadManager t6 = new IndexerThreadManager("Ind Thread 6",e6);
+		t6.start();
+		
+		Indexer e7 = new Indexer();
+		IndexerThreadManager t7 = new IndexerThreadManager("Ind Thread 7",e7);
+		t7.start();
+		
+		Indexer e8 = new Indexer();
+		IndexerThreadManager t8 = new IndexerThreadManager("Ind Thread 8",e8);
+		t8.start();
+		
+		Indexer e9 = new Indexer();
+		IndexerThreadManager t9 = new IndexerThreadManager("Ind Thread 9",e9);
+		t9.start();
+		
+		Indexer e10 = new Indexer();
+		IndexerThreadManager t10 = new IndexerThreadManager("Ind Thread 10",e10);
+		t10.start();
+		
 		
 		
 		
@@ -151,7 +153,9 @@ public class IndexManager {
 		
 		
 		System.out.println("done");
-		writeJSON.execute(m);
+		int N = UrlsIndexed.size();
+		System.out.println("N --->"+N);
+		writeJSON.execute(m,N);
 		System.out.println("done");
 	}
 	

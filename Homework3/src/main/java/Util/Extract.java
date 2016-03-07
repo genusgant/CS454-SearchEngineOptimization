@@ -151,7 +151,7 @@ public class Extract {
 	        	{
 	        	
 	        		if (!link.attr("abs:href").equals(""))
-	        		Links.add(link.attr("abs:href"));
+	        		Links.add(MD5(link.attr("abs:href")));
 	        	
 	        	}
 	        }

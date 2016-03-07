@@ -16,6 +16,7 @@ import model.Doc;
 import model.Page;
 import model.TDF;
 import model.TF;
+import rank.Ranking;
 
 
 public class writeJSON {
@@ -106,11 +107,11 @@ public class writeJSON {
 
      }
      
-    public static void execute(ConcurrentMap<String, ArrayList<TDF>> input)
+    public static void execute(ConcurrentMap<String, ArrayList<TDF>> input, int N)
     {
     	
-    	System.out.println("input  ....."+input);
-    	 
+//    	System.out.println("input  ....."+input);
+    	
     	JSONObject obj = new JSONObject();
     	 
     	Iterator it = input.entrySet().iterator();
@@ -118,24 +119,49 @@ public class writeJSON {
     	int counter = 0;
 			
 		while (it.hasNext()) {
+			
+			String word = "";
+			int tf;
+			int df;
+			double idf;
+			double wtd;
+			
+			try 
+	    	{
 			Map.Entry pairs = (Map.Entry) it.next();
 				
-			String word = "";
+			
 			word = (String) pairs.getKey();
 			list = (ArrayList<TDF>) pairs.getValue();
+			
+			df = list.size();
+			idf = Ranking.idf(N, df);
+			
 				
 			JSONArray jlist = new JSONArray();
 				
 			for( TDF t : list)
 			{
+				tf = t.getCount();
 				JSONObject obj1 = new JSONObject();
-				obj1.put(t.getsNO(), t.getCount());
+				JSONArray tlist = new JSONArray();
+				tlist.add(tf);
+				wtd = Ranking.tfidf(tf, idf);
+				tlist.add(wtd);
+				obj1.put(t.getsNO(),tlist); // 
 				jlist.add(obj1);
 									
 			}		
 			obj.put(word, jlist);
 			
+			
+	    	 }catch (NullPointerException e)
+	    	 {
+	    		 System.out.println(word);
+	    	 }
+			
 		}
+    	 
 
 
 		try {

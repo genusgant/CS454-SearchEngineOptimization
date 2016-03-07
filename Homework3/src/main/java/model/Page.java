@@ -19,6 +19,7 @@ public class Page {
 	private ArrayList<String> script;
 	private ArrayList<String> imports;
 	private ArrayList<String> links;
+	private ArrayList<String> inlinks;
 	private String extractdate;
 	
 	

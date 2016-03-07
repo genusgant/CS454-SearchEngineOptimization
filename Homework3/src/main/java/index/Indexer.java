@@ -45,6 +45,7 @@ public class Indexer {
 		
 		constructIndex(i);
 		
+		IndexManager.UrlsIndexed.add(input);
 		
 	}
 	
