@@ -42,19 +42,16 @@ public class LinkAnalysisManager {
 			links = p.getLinks();
 			
 			for (Page p1 : UrlsToAnalyse)
-			{
-				if (p.getId().equal(p1.getId()))
-			}
-			
-			outgoing.put(url, links);
+				if (p.getId().equals(p1.getId()))
+	            outgoing.put(url, links);
 			
 		}
 		
 		System.out.println("total URL in map : "+outgoing.size());
 		
-		for (Entry<String, ArrayList<String>> entry : outgoing.entrySet()) {
+		for (Entry<String, ArrayList<String>> entry : outgoing.entrySet()) 
 			System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
-		}
+		
 		
 //		outgoing.forEach((k,v)->System.out.println("Key : " + k + " Value : " + v));
 	}

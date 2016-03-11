@@ -29,13 +29,13 @@ public class Ranking  {
 	public static double idf(int N, int df) {
 	    double n = 0;
 	    
-	    return Math.log(N / df);
+	    return Math.log10(N / df);
 	}
 	
 	public static double tfidf(int tf, double idf) {
 	    double n = 0;
 	    
-	    return Math.log(1 + tf)* idf;
+	    return Math.log10(1 + tf)* idf;
 	}
 	
 	public double tfIdf(ArrayList<String> doc, ArrayList<ArrayList<String>> docs, String term) {

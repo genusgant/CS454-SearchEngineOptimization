@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Page {
+public class Page implements Serializable{
 	
 	private int sNo;
 	private String id;
@@ -14,6 +15,7 @@ public class Page {
 	private String bodytext;
 	private String description;
 	private String keywords;
+	private int outlinks;
 	private ArrayList<String> metadata;
 	private ArrayList<String> img;
 	private ArrayList<String> script;
@@ -24,6 +26,18 @@ public class Page {
 	
 	
 	
+	public int getOutlinks() {
+		return outlinks;
+	}
+	public void setOutlinks(int outlinks) {
+		this.outlinks = outlinks;
+	}
+	public ArrayList<String> getInlinks() {
+		return inlinks;
+	}
+	public void setInlinks(ArrayList<String> inlinks) {
+		this.inlinks = inlinks;
+	}
 	public int getsNo() {
 		return sNo;
 	}

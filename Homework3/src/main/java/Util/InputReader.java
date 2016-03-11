@@ -19,7 +19,7 @@ public class InputReader {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		execute("C:/Users/genus_000/Downloads/wiki-small/en");
+		execute("C:/Users/Ajay/Desktop/college/CS454/en");
 		
 	}
 		
