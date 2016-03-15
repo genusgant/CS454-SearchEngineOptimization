@@ -82,7 +82,7 @@
 
 <tr>
 	<td><table>
-	<tr><td> <a href='<%= path+"/"+url %>'><%= url %></a></td></tr>
+	<tr><td> <a href='<%= path %>'><%= url %></a></td></tr>
 	<tr><td> <%= description %></td></tr>
 	</table></td></tr>
 <%
