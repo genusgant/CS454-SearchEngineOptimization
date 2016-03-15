@@ -6,13 +6,15 @@
 
 	db = (DataReader)request.getServletContext().getAttribute("data");
 
-    String query = request.getParameter("q");
+    String input = request.getParameter("q");
      
-    List<String> countries = db.getData(query);
+    List<String> countries = db.getData(input);
  
     Iterator<String> iterator = countries.iterator();
-    while(iterator.hasNext()) {
+    int i = 0;
+    while(iterator.hasNext() && i<10) {
         String country = (String)iterator.next();
         out.println(country);
+        i++;
     }
 %>

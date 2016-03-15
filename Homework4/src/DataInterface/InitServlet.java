@@ -1,6 +1,7 @@
 package DataInterface;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/InitServlet")
 public class InitServlet extends HttpServlet {
+	
+	
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -49,7 +52,32 @@ public class InitServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+//		doGet(request, response);
+		
+		DataReader db;
+
+		db = (DataReader)request.getServletContext().getAttribute("data");
+
+		
+		System.out.println("post method+++++++++++++++++");
+		
+		ArrayList<String> page = new ArrayList<String>();
+		
+		
+		
+		
+		String input = request.getParameter("country");
+		
+	    System.out.println("input ----> "+input);
+	    
+	    
+	    page = db.Search(input);
+	    ServletContext context = getServletContext();
+	    context.setAttribute("result", page);
+	    
+	    response.sendRedirect("search.jsp");
+	    
+	    
 	}
 
 }
