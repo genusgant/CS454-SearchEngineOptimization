@@ -11,7 +11,7 @@ public class PageRank implements Serializable{
 	private Double curr;
 	private int income;
 	private int outgo;
-	private ArrayList<Page> inlinks;
+//	private ArrayList<Page> inlinks;
 	
 	
 	
@@ -62,12 +62,12 @@ public class PageRank implements Serializable{
 	public void setOutgo(int outgo) {
 		this.outgo = outgo;
 	}
-	public ArrayList<Page> getInlinks() {
-		return inlinks;
-	}
-	public void setInlinks(ArrayList<Page> inlinks) {
-		this.inlinks = inlinks;
-	}
+//	public ArrayList<Page> getInlinks() {
+//		return inlinks;
+//	}
+//	public void setInlinks(ArrayList<Page> inlinks) {
+//		this.inlinks = inlinks;
+//	}
 	
 	
 	

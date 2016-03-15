@@ -66,7 +66,8 @@ public class Extract {
 			File f = new File(path);
 			Document source = Jsoup.parse(f, "UTF-8");
 			
-			
+			try
+			{
 			String title = "";
 			if(source.title()!=null)
 				title = source.title();
@@ -76,6 +77,10 @@ public class Extract {
 			if(source.body().text()!=null)
 				Bodytext = source.body().text();
 			p.setBodytext(Bodytext);
+			
+			}catch(NullPointerException e){
+				System.out.println("No text or body");
+			}
 			
 			
 			String description = "";

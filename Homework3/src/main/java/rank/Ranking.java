@@ -26,14 +26,14 @@ public class Ranking  {
 	    return Math.log(docs.size() / n);
 	}
 	
-	public static double idf(int N, int df) {
-	    double n = 0;
+	public static Double idf(int N, int df) {
+		Double n = 0.0;
 	    
 	    return Math.log10(N / df);
 	}
 	
-	public static double tfidf(int tf, double idf) {
-	    double n = 0;
+	public static Double tfidf(int tf, Double idf) {
+		Double n = 0.0;
 	    
 	    return Math.log10(1 + tf)* idf;
 	}

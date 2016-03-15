@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -13,7 +14,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import model.Doc;
+import model.IndexFile;
 import model.Page;
+import model.PageRank;
 import model.TDF;
 import model.TF;
 import rank.Ranking;
@@ -75,7 +78,7 @@ public class writeJSON {
 		list.add(obj1);
 	}
 	
-	obj.put( d.getsNo(), list);
+	obj.put( d.getId(), list);
 //	obj.put("age", new Integer(100));
 
 //	JSONArray list = new JSONArray();
@@ -88,7 +91,7 @@ public class writeJSON {
 	try {
 		
 		
-		File file = new File("C:/DRIVE/Doc/"+d.getsNo()+".json");
+		File file = new File("C:/DRIVE/Doc/"+d.getId()+".json");
 
 		if (!file.exists()) {
 			file.createNewFile();
@@ -112,6 +115,10 @@ public class writeJSON {
     	
 //    	System.out.println("input  ....."+input);
     	
+    	HashMap<String, ArrayList<TDF>> indexMap = new HashMap();
+    	
+    	
+    	
     	JSONObject obj = new JSONObject();
     	 
     	Iterator it = input.entrySet().iterator();
@@ -120,11 +127,13 @@ public class writeJSON {
 			
 		while (it.hasNext()) {
 			
+//			IndexFile i = new IndexFile();
+			
 			String word = "";
 			int tf;
 			int df;
-			double idf;
-			double wtd;
+			Double idf;
+			Double wtd;
 			
 			try 
 	    	{
@@ -139,20 +148,36 @@ public class writeJSON {
 			
 				
 			JSONArray jlist = new JSONArray();
+			
+			ArrayList<TDF> maplist = new ArrayList<TDF>();
+			
 				
 			for( TDF t : list)
 			{
+			
+				
+				
 				tf = t.getCount();
 				JSONObject obj1 = new JSONObject();
 				JSONArray tlist = new JSONArray();
 				tlist.add(tf);
 				wtd = Ranking.tfidf(tf, idf);
 				tlist.add(wtd);
-				obj1.put(t.getsNO(),tlist); // 
+				obj1.put(t.getId(),tlist); // 
 				jlist.add(obj1);
 									
+				TDF maptdf = new TDF(t.getsNO(),t.getId(),tf,wtd);
+				maplist.add(maptdf);
 			}		
 			obj.put(word, jlist);
+			indexMap.put(word, maplist);
+			
+			
+			
+			
+			
+			
+			
 			
 			
 	    	 }catch (NullPointerException e)
@@ -162,7 +187,7 @@ public class writeJSON {
 			
 		}
     	 
-
+		ReadWriteFile.writeIndexFile(indexMap);
 
 		try {
 	

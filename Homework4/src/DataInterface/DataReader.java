@@ -89,7 +89,17 @@ public class DataReader {
 //    	String country = null;
     	String input =null;
         query = query.toLowerCase();
+        
+        boolean flag = false;
+        if (query.contains(" and "))
+        {
+        	flag = true;
+        }
+        
         ArrayList<String> matched = new ArrayList<String>();
+        
+        ArrayList<String> priority = new ArrayList<String>();
+        
     	try {
 			 input = StopWord.StopStem(query);
 		
@@ -130,6 +140,10 @@ public class DataReader {
 //      			System.out.println("Doc pScore --> "+pScore);
       			pScore = pScore + t.getScore();
       			scoreMap.put(page, pScore);
+      			if (flag)
+      			{
+      				priority.add(page);
+      			}
 //      			System.out.println("Doc pScore new--> "+scoreMap.get(page));
   			} else {
   			    // if the key hasn't been used yet,
@@ -154,6 +168,23 @@ public class DataReader {
 //    	Collections.max(scoreMap.values());
     	
     	Double max_index = Collections.max(scoreMap.values());
+    	
+    	if (flag)
+    	{
+    		for (String s : priority)
+    		{
+    		if(scoreMap.containsKey(s)){
+  			    // if the key has already been used,
+  			    // we'll just grab the array list and add the value to it
+      			Double pScore;
+      			pScore = (Double) scoreMap.get(s);
+//      			System.out.println("Doc pScore --> "+pScore);
+      			pScore = pScore + max_index;
+      			scoreMap.put(s, pScore);
+    		}
+    		}
+    		max_index = Collections.max(scoreMap.values());
+    	}
       
       for (Entry<String, Double> entry : scoreMap.entrySet())
 		{

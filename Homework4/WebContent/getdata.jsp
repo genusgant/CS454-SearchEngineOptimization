@@ -7,8 +7,19 @@
 	db = (DataReader)request.getServletContext().getAttribute("data");
 
     String input = request.getParameter("q");
+    
+   // String query =input.substring(input.lastIndexOf(" ")+1);
+    
+    //System.out.println("input ----> "+input);
+    
+    //System.out.println("query ----> "+query);
+    
+   // int pos;
+	//pos = input.indexOf(" ");
      
     List<String> countries = db.getData(input);
+    
+    //Collections.sort(countries,new String());
  
     Iterator<String> iterator = countries.iterator();
     int i = 0;

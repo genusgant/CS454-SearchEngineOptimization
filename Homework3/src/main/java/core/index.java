@@ -1,10 +1,12 @@
 package core;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Util.InputReader;
+import Util.ReadWriteFile;
 import extractor.Extractor;
 import extractor.ExtractorManager;
 import link.LinkAnalysisManager;
@@ -17,14 +19,19 @@ public class index {
 	
 	public static ConcurrentLinkedQueue<Page> UrlsExtracted = new ConcurrentLinkedQueue<Page>();
 	
+	public static HashMap<String, Page> ExtractedMap = new HashMap<String, Page>();
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		int input;
 		
-//		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en/articles/a/e");
+//		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en/articles/a");
 		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en");
+//		UrlsToExtract = InputReader.execute("C:/eclipse-jee-mars-1-win32-x86_64/WORKSPACE/Homework2/data");
+//		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-large/en/articles");
+//		C:\Users\genus_000\Downloads\wiki-large\en\articles
 		System.out.println(UrlsToExtract.size());
 		
 		input = UrlsToExtract.size();
@@ -52,11 +59,26 @@ public class index {
 		System.out.println("ha ha "+UrlsExtracted.size());
 		
 		
+		for (Page p : UrlsExtracted)
+		{
+			
+			ExtractedMap.put(p.getId(), p);
+			
+		}
+		
+		ReadWriteFile.writeUrlsFile(ExtractedMap);
+		
+		
+		
 		//Link analysis
+		
+		System.out.println("Link analysis Statrted...");
 		
 		LinkAnalysisManager lam = new LinkAnalysisManager(UrlsExtracted);
 		lam.execute();
 		
+		
+		//Indexing
 		
 		
 		

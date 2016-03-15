@@ -104,9 +104,10 @@ public class readJSON {
     			value = Integer.parseInt(wordSet.values().toArray()[0].toString());
     			
     			TDF td =new TDF();
-    			td.setsNO(Integer.parseInt(name));
+    			td.setId(name);
+//    			td.setsNO(Integer.parseInt(name));
     			td.setCount(value);
-    			td.setId(null);
+//    			td.setId(null);
     			
     			Index i = new Index();
     			i.setWord(key);

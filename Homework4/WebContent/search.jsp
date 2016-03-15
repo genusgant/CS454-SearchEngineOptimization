@@ -63,6 +63,7 @@
     if (pages!=null)
     {
     	
+    	int counter =0;
     
     
     for (String s : pages )
@@ -75,21 +76,43 @@
     	String path ="";
     	url = p.getUrl();
     	title = p.getTitle();
+    	if(title == null)
+    	{
+    		title = url;
+    	}
     	description = p.getDescription();
+    	if(description == null)
+    	{
+    		description = p.getBodytext().subSequence(0, 50).toString();
+    	}
     	path = p.getPath();
+    	++counter;
     	
 %>
 
 <tr>
 	<td><table>
-	<tr><td> <a href='<%= path %>'><%= url %></a></td></tr>
+	<tr><td> <a href='<%= path %>'><%= title %></a></td></tr>
 	<tr><td> <%= description %></td></tr>
+	<br>
 	</table></td></tr>
-<%
+
+    
+	<%
  	 
     	
     	System.out.println("pages ----> "+s);
     }
+    
+    %>
+    <br>
+    <br>
+    <br>
+    <table>
+    <br>
+    <br>
+	<tr><td align="right"><b><%=counter %> Results Found </b></td></tr></table>
+    <%
     }
     %>
 	</table>

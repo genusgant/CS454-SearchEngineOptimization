@@ -98,4 +98,16 @@ task view(type: JavaExec) {
 }
 
 
+task create(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'index.IndexManager'
+}
+
+
+task rank(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'rank.Ranking'
+}
 
