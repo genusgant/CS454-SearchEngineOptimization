@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class InitServlet
@@ -72,8 +73,12 @@ public class InitServlet extends HttpServlet {
 	    
 	    
 	    page = db.Search(input);
-	    ServletContext context = getServletContext();
-	    context.setAttribute("result", page);
+//	    ServletContext context = getServletContext();
+//	    context.setAttribute();
+	    
+	    HttpSession session =request.getSession();
+	    session.setAttribute("result", page);
+	    
 	    
 	    response.sendRedirect("search.jsp");
 	    

@@ -54,9 +54,9 @@
 			
 			
 
-    pages = (ArrayList<String>)request.getServletContext().getAttribute("result");
+   // pages = (ArrayList<String>)request.getServletContext().getAttribute("result");
 			
-	
+    pages = (ArrayList<String>)request.getSession().getAttribute("result");
     
     String input = request.getParameter("country");
     
@@ -72,12 +72,17 @@
     	String title = "";
     	String description ="";
     	String url ="";
+    	String path ="";
     	url = p.getUrl();
+    	title = p.getTitle();
+    	description = p.getDescription();
+    	path = p.getPath();
+    	
 %>
 
 <tr>
 	<td><table>
-	<tr><td> <a href='<%= url %>'><%= url %></a></td></tr>
+	<tr><td> <a href='<%= path+"/"+url %>'><%= url %></a></td></tr>
 	<tr><td> <%= description %></td></tr>
 	</table></td></tr>
 <%
