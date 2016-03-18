@@ -8,10 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import model.Doc;
 import model.IndexFile;
@@ -158,13 +164,14 @@ public class writeJSON {
 				
 				
 				tf = t.getCount();
-				JSONObject obj1 = new JSONObject();
+//				JSONObject obj1 = new JSONObject();
 				JSONArray tlist = new JSONArray();
+				tlist.add(t.getId());
 				tlist.add(tf);
 				wtd = Ranking.tfidf(tf, idf);
 				tlist.add(wtd);
-				obj1.put(t.getId(),tlist); // 
-				jlist.add(obj1);
+//				obj1.put(t.getId(),tlist); // 
+				jlist.add(tlist);
 									
 				TDF maptdf = new TDF(t.getsNO(),t.getId(),tf,wtd);
 				maplist.add(maptdf);
@@ -188,11 +195,57 @@ public class writeJSON {
 		}
     	 
 		ReadWriteFile.writeIndexFile(indexMap);
+		
+		System.out.println("writeJSON --> Started");
 
-		try {
-	
-			FileWriter file = new FileWriter("C:/DRIVE/big.json");
-			file.write(obj.toJSONString());
+//		try {   //write json
+//			
+//			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//    		JsonParser jp = new JsonParser();
+//    		JsonElement je = jp.parse(obj.toJSONString());
+//    		String prettyJsonString = gson.toJson(je);
+//	
+//			FileWriter file = new FileWriter("C:/DRIVE/big.json");
+//			file.write(prettyJsonString);
+//			file.flush();
+//			file.close();
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			
+//		}
+		
+		System.out.println("writeJSON --> Done");
+		
+    }
+    
+    public static void WriteJsonFile(HashMap<String, PageRank> map, Double max_rank)
+    {
+    	
+    	JSONObject obj = new JSONObject();
+    	
+    	obj.put("max_rank", max_rank);
+    		
+    	
+    	JSONArray list = new JSONArray();
+    	for (Entry<String, PageRank> entry : map.entrySet())
+		{
+    		JSONArray jlist = new JSONArray();
+    		jlist.add(entry.getValue().getCurr());
+    		jlist.add(entry.getValue().getRank());
+    		obj.put(entry.getKey(), jlist);
+//			entry.getValue().setRank(entry.getValue().getRank()/max_rank);
+		}
+    	
+    	try {   //write json
+    		
+    		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    		JsonParser jp = new JsonParser();
+    		JsonElement je = jp.parse(obj.toJSONString());
+    		String prettyJsonString = gson.toJson(je);
+    		
+			FileWriter file = new FileWriter("C:/DRIVE/rank.json");
+			file.write(prettyJsonString);
 			file.flush();
 			file.close();
 			
@@ -200,7 +253,39 @@ public class writeJSON {
 			e.printStackTrace();
 			
 		}
-		
+    }
+    
+    public static void WriteJsonFile(HashMap<String, Page> map)
+    {
+    	
+    	JSONObject obj = new JSONObject();
+    	
+  		
+    	for (Entry<String, Page> entry : map.entrySet())
+		{
+//    		JSONArray jlist = new JSONArray();
+//    		jlist.add(entry.getValue().getCurr());
+//    		jlist.add(entry.getValue().getRank());
+    		obj.put(entry.getKey(), entry.getValue().getUrl());
+//			entry.getValue().setRank(entry.getValue().getRank()/max_rank);
+		}
+    	
+    	try {   //write json
+    		
+    		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    		JsonParser jp = new JsonParser();
+    		JsonElement je = jp.parse(obj.toJSONString());
+    		String prettyJsonString = gson.toJson(je);
+    		
+			FileWriter file = new FileWriter("C:/DRIVE/urls.json");
+			file.write(prettyJsonString);
+			file.flush();
+			file.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
     }
 
 }

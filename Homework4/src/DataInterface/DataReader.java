@@ -199,6 +199,8 @@ public class DataReader {
 			
 //			calculateRank(nRank,pr.getRank() );
 			
+			System.out.println("Page name : "+entry.getKey()+" TFIDF : "+nRank+" PageRank : "+pr.getRank()+" Rank :"+calculateRank(nRank,pr.getRank() ));
+			
 			RankScore.put(entry.getKey(), calculateRank(nRank,pr.getRank() ));
 		}
       
@@ -238,9 +240,9 @@ public class DataReader {
     {
     	Double Rank;
     	
-    	iRank = iRank/2;
-    	
-    	pRank = pRank/2;
+//    	iRank = iRank/2;
+//    	
+//    	pRank = pRank/2;
     	
     	Rank = (iRank*0.7) + (pRank*0.3);
     	

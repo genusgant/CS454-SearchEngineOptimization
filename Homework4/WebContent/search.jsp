@@ -32,10 +32,38 @@
 <table width= "50%">
 <br>
 <br>
- <tr> <td>
+ <tr>  <td>
 
   <form action="/Homework4/InitServlet" method="post" id="search_form" class="clearfix">
-	<input align ="middle" "text" size="150" maxlength="150" id="country" name="country" placeholder="What are you looking for?" id="search_text" />
+  <% 
+  
+  //String inp = "";
+  
+  //inp = (String)request.getAttribute("input");
+  
+  if((String)request.getSession().getAttribute("input")==null)
+  {
+	  %>
+	  
+	  <input align ="middle" "text" size="150" maxlength="150" id="country" name="country" placeholder="What are you looking for?" id="search_text" />
+	  
+	  <%
+	  
+  }
+  else
+  {
+	  
+	  %>
+	   <input align ="middle" "text" size="150" maxlength="150" id="country" name="country" placeholder="What are you looking for?" id="search_text" value ='<%=(String)request.getSession().getAttribute("input") %>' />
+	  <%
+	  } 
+	  
+	  %>
+	  
+  
+  
+ 
+	
 	<input type="submit" name="search" value="Search" id="search_button" />
 	</form>
 	</td>
@@ -43,7 +71,7 @@
 	</table>
 	
 	<br>
-	<br>
+	
 	
 	<table>
 	
@@ -81,19 +109,29 @@
     		title = url;
     	}
     	description = p.getDescription();
+    	
+    	
     	if(description == null)
     	{
-    		description = p.getBodytext().subSequence(0, 50).toString();
+    		description = p.getBodytext().substring(0, 50);
     	}
     	path = p.getPath();
+    	//System.out.println("path ----> "+path+"  url "+url);
+    	
     	++counter;
+    	
+    	//request.getSession().invalidate();
+    	
+    	// description
+    	
     	
 %>
 
 <tr>
 	<td><table>
-	<tr><td> <a href='<%= path %>'><%= title %></a></td></tr>
+	<tr><td> <a href="<%= path %>"><%= title %></a></td></tr>
 	<tr><td> <%= description %></td></tr>
+	
 	<br>
 	</table></td></tr>
 
@@ -101,7 +139,7 @@
 	<%
  	 
     	
-    	System.out.println("pages ----> "+s);
+    	// System.out.println("pages ----> "+s);
     }
     
     %>

@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
 import Util.ReadWriteFile;
+import Util.writeJSON;
+import core.index;
 import index.IndexManager;
 import model.Page;
 import model.PageRank;
@@ -54,10 +56,16 @@ public class LinkAnalysisManager {
 			
 			ArrayList<String> links = new ArrayList<String>();
 			
-			links = p.getLinks();	
+			links = p.getLinks();
+			
+//			System.out.println();
 			
 			Set<String> hs = new HashSet<>();
 			hs.addAll(links);
+			
+//			System.out.println("HS"+hs);
+			
+			System.out.println("Find Incomming : Input url : "+url+" Hlist : "+links.size()+" HS Size : "+hs.size());
 			
 			p.setOutlinks(hs.size());
 			
@@ -70,12 +78,14 @@ public class LinkAnalysisManager {
 				    // we'll just grab the array list and add the value to it
 				    list = incoming.get(l);
 				    list.add(url);
+//				    System.out.println("adding Incoming for : "+l);
 				} else {
 				    // if the key hasn't been used yet,
 				    // we'll create a new ArrayList<String> object, add the value
 				    // and put it in the array list with the new key
 				    list = new ArrayList<String>();
 				    list.add(url);
+//				    System.out.println("New Incoming as : "+l);
 				    incoming.put(l, list);
 				}
 				
@@ -117,7 +127,7 @@ public class LinkAnalysisManager {
 		int i =0 ;
 		for(Page p : UrlsToAnalyse)
 		{
-			System.out.println("Id : "+p.getId());
+//			System.out.println("Id : "+p.getId());
 			
 			
 			ArrayList<String> list = new ArrayList<String>();
@@ -134,7 +144,7 @@ public class LinkAnalysisManager {
 			list = incoming.get(p.getId());
 			
 			if (list!=null){
-				System.out.println("list"+list.size());
+				System.out.println("setting incoming size for : "+p.getId()+" is : "+list.size());
 			}
 			
 			
@@ -167,13 +177,13 @@ public class LinkAnalysisManager {
 		
 		
 		
-		System.out.println("total URL in map : "+incoming.size());
+//		System.out.println("total URL in map : "+incoming.size());
 		
 //		for (Entry<String, ArrayList<String>> entry : incoming.entrySet()) {
 //			System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue().size());
 //		}
 		
-		System.out.println("total incoming : "+count);
+		System.out.println("total pages has incoming : "+count);
 		
 		
 		
@@ -191,7 +201,7 @@ public class LinkAnalysisManager {
 		Double N = (double) toRank.size();
 		
 		
-		System.out.println("Rank Input : "+toRank.size());
+		System.out.println("Total pages for Rank : "+toRank.size());
 		
 		Double init_rank = 1/N;
 		
@@ -208,11 +218,15 @@ public class LinkAnalysisManager {
 			
 		}
 		
-		int i = 0;
+//		System.out.println("Incoming Outgoing ---->"+toRank);
 		
-//		while(doIterate)
-		while(i<10)
+		int i = 1;
+		
+		while(doIterate && i<=10)
+//		while(i<10)
 		{
+			
+			System.out.println("Iteration  ---->"+i);
 			
 			for (Entry<String, PageRank> entry : toRank.entrySet())
 			{
@@ -221,14 +235,22 @@ public class LinkAnalysisManager {
 				inpage = entry.getKey();
 				
 				Double sum =0.000000;
-				Double rank=0.000000;			
+				Double rank=0.000000;	
+				
+//				System.out.println("inpage---->"+inpage);
+				
+//				System.out.println("inpage---->"+inpage+"Rank "+entry.getValue().getIncome() );
 				
 				
 				if (entry.getValue().getP().getInlinks()!= null)
 				{
+					
 					ArrayList<String> inrank = new ArrayList<String>();
 					
 					inrank = entry.getValue().getP().getInlinks();
+					
+					
+//					System.out.println("Yahoo some incoming--->"+inrank.size());
 					
 					for (String s : inrank)
 					{
@@ -236,14 +258,14 @@ public class LinkAnalysisManager {
 						
 						rank = toRank.get(s).getRank()/toRank.get(s).getOutgo();
 						
-						System.out.println("rank "+rank);
+//						System.out.println("rank "+rank);
 						
 						sum = sum + rank;
 					}
-					System.out.println("sum "+sum);
+//					System.out.println("sum "+sum);
 					
 					rank=PR(N,sum);
-					System.out.println("Calculated : "+rank);
+//					System.out.println("Calculated : "+rank);
 					
 					entry.getValue().setCurr(rank);
 					
@@ -273,28 +295,36 @@ public class LinkAnalysisManager {
 				
 
 			}
+			
+			System.out.println("Iteration : "+i+" Done...." );
+			
 			i++;
-			System.out.println("Iteration : "+i);
 			
+			doIterate = false;
 			
-			
-			
-			 Map.Entry<String,PageRank> entry1=toRank.entrySet().iterator().next();
-			 String key= entry1.getKey();
-			 System.out.println("key : "+key+" rank :"+df.format(entry1.getValue().getRank())+" curr : "+df.format(entry1.getValue().getCurr()) );
-			 System.out.println("key : "+key+" rank :"+entry1.getValue().getRank()+" curr : "+entry1.getValue().getCurr() );
+//			 Map.Entry<String,PageRank> entry1=toRank.entrySet().iterator().next();
+//			 String key= entry1.getKey();
+//			 System.out.println("key : "+key+" rank :"+df.format(entry1.getValue().getRank())+" curr : "+df.format(entry1.getValue().getCurr()) );
+//			 System.out.println("key : "+key+" rank :"+entry1.getValue().getRank()+" curr : "+entry1.getValue().getCurr() );
 			 
 			 
 			 
 			 
 			 for (Entry<String, PageRank> entry : toRank.entrySet())
 				{
+				 if(entry.getValue().getCurr()!=entry.getValue().getRank())
+				 {
+					 
+					 doIterate = true;
+				 }
 //					entry1.getValue().setRank(entry1.getValue().getCurr());
 //					System.out.println("key : "+entry.getKey()+" rank :"+df.format(entry.getValue().getRank())+" curr : "+df.format(entry.getValue().getCurr()) );
 					entry.getValue().setRank(entry.getValue().getCurr());
 				}
-			System.out.println("Initial rank --->"+init_rank);
+//			System.out.println("Initial rank --->"+init_rank);
 		}
+		
+		System.out.println("All Iterations Done...");
 		
 		for (Entry<String, PageRank> entry : toRank.entrySet())
 		{
@@ -309,6 +339,7 @@ public class LinkAnalysisManager {
 		
 		
 		ReadWriteFile.writeFile(toRank);
+		writeJSON.WriteJsonFile(toRank,max_rank);  // write json 
 
 	}
 	

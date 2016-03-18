@@ -91,7 +91,7 @@ public class readJSON {
     		// loop array
     		JSONArray msg = (JSONArray) jsonObject.get(name);
     		Iterator<JSONObject> iterator = msg.iterator();
-    		
+//    		System.out.println("Reading JSON --->"+msg);
     		while (iterator.hasNext()) {
     			
     			String key = "";

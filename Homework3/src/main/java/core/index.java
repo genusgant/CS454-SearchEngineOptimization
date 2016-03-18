@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Util.InputReader;
 import Util.ReadWriteFile;
+import Util.writeJSON;
 import extractor.Extractor;
 import extractor.ExtractorManager;
 import link.LinkAnalysisManager;
@@ -28,7 +29,8 @@ public class index {
 		int input;
 		
 //		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en/articles/a");
-		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en");
+//		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-small/en");
+		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/munged/munged");
 //		UrlsToExtract = InputReader.execute("C:/eclipse-jee-mars-1-win32-x86_64/WORKSPACE/Homework2/data");
 //		UrlsToExtract = InputReader.execute("C:/Users/genus_000/Downloads/wiki-large/en/articles");
 //		C:\Users\genus_000\Downloads\wiki-large\en\articles
@@ -67,6 +69,7 @@ public class index {
 		}
 		
 		ReadWriteFile.writeUrlsFile(ExtractedMap);
+		writeJSON.WriteJsonFile(ExtractedMap);  // write json 
 		
 		
 		

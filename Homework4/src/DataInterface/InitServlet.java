@@ -45,6 +45,7 @@ public class InitServlet extends HttpServlet {
 	    	  System.out.println("Data Loaded to memory");
 	      }
 	      System.out.println("search.jsp");
+	      request.getSession().invalidate();
 		response.sendRedirect("search.jsp");
 	}
 
@@ -71,13 +72,22 @@ public class InitServlet extends HttpServlet {
 		
 	    System.out.println("input ----> "+input);
 	    
+	    try
+	    {
 	    
 	    page = db.Search(input);
 //	    ServletContext context = getServletContext();
 //	    context.setAttribute();
 	    
+	    }catch(NullPointerException e){
+			System.out.println("No results found");
+		}
+	    
+	    
 	    HttpSession session =request.getSession();
 	    session.setAttribute("result", page);
+	    session.setAttribute("input", input);
+//	    request.setAttribute("input", input);
 	    
 	    
 	    response.sendRedirect("search.jsp");

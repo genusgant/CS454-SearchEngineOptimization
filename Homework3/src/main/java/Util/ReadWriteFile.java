@@ -20,6 +20,7 @@ public class ReadWriteFile {
 	public static void writeFile(HashMap<String, PageRank> map)
 	{
 		 try {
+			 System.out.println("writeFile --> Started");
 			 File file = new File("C:/DRIVE/rank.txt");
 			 FileOutputStream f = new FileOutputStream(file);
 			 ObjectOutputStream s = new ObjectOutputStream(f);
@@ -36,6 +37,7 @@ public class ReadWriteFile {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		 System.out.println("writeFile --> Done");
 	}
 	
 	
